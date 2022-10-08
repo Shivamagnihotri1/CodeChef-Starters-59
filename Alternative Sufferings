@@ -1,0 +1,84 @@
+Problem
+You are given a binary string S.
+In one second, the following scenario happens simultaneously and independently for all the bits
+which are set to 11 in the string: Change the bit from 1 to 0.
+If the left neighbour exists and is 0, change it to 1.
+If the right neighbour exists and is 0, change it to 1.
+For example, if S = 010 initially, then after 1 second, S = 101
+(the 1 bit and both its neighbours were changed). After another second, S = 010. 
+Here, the first and the last bit were changed to 0 because earlier they were 1. 
+The middle bit was changed because it was 0 earlier and it was a neighbour of a 1 bit.
+
+Find out the string SS after KK seconds.
+Input Format
+The first line of input will contain a single integer T, denoting the number of test cases.
+Each test case consists of multiple lines of input.
+The first line of each test case contains two space-separated integers N and K — the length of string S and the number of seconds.
+The next line describes the string S
+
+Output Format
+For each test case, output the string SS after exactly K seconds.
+
+•	1 ≤ T ≤ 1000
+•	1 ≤ N ≤ 10^5
+•	1 ≤ K ≤ 10^9
+•	The sum of N over all test cases won't exceed 10^6.
+• S can only contion the characters 0 and 1.
+
+Sample 1:
+Input             Output
+3                 010
+3 1               10101
+101               011001010101
+5 2               01
+10001
+14 3
+10011010111000
+
+Explanation:
+Test case 1: The middle bit is changed to 1 since it had a neighbouring set bit (in this case both left and right) and both the set bits are changed to 0. Hence, after one second, it is 101.
+Test case 2: After first second, the string SS will be 01010. After another second , the string becomes 10101.
+
+Solution:
+C++17
+
+#include<bits/stdc++.h>
+#define int long long
+using namespace std;
+int a[100001];
+void solve() {
+    string Q;
+    int n,z;
+    cin >> n >> z >> Q;
+    z--; 
+    Q="."+Q+".";
+    string b=Q;
+    for(int j=1;j<=n;++j) 
+    if(Q[j]=='1') {
+        b[j]='0';
+        if(Q[j-1]=='0')b[j-1]='1';
+        if(Q[j+1]=='0')b[j+1]='1';
+        }
+        Q=b.substr(1,n);
+        for(int i=0,x=2147483647;i<n;++i,x++) {
+            if(Q[i]=='1') x=0;
+            a[i]=x;
+            }
+            for(int i=n,x=2147483647;i>=0;--i,x++) {
+                if(Q[i]=='1') x=0;
+                a[i]=min(a[i],x);
+                }
+                for(int i=0;i<n;++i) {
+                    if(z<a[i]) putchar('0');
+                    else putchar((z-a[i])%2==0?'1':'0');
+                    }
+                    putchar('\n');
+                    }
+signed main() {
+int T;cin >> T;
+while(T--) 
+    solve();
+}
+
+
+
